@@ -1,3 +1,8 @@
+# libtinyhtm
+
+This is a modified fork of [libtinyhtm](https://github.com/Caltech-IPAC/libtinyhtm). See notes below for references and licensing.
+
+---
 Minimalistic HTM indexing implementation.
 
 This software is based on work by A. Szalay, T. Budavari, G. Fekete at

@@ -176,22 +176,10 @@ int64_t htm_tree_s2cpoly (const struct htm_tree *tree,
                           const struct htm_s2cpoly *poly,
                           enum htm_errcode *err, htm_callback callback)
 {
-  if (tree->element_types.at (0) == H5::PredType::NATIVE_DOUBLE)
-    {
-      htm_tree_s2cpoly_template<double>(tree, poly, err, callback);
-    }
-  else if (tree->element_types.at (0) == H5::PredType::NATIVE_FLOAT)
-    {
-      htm_tree_s2cpoly_template<float>(tree, poly, err, callback);
-    }
-  else
-    {
-      if (err != nullptr)
-        {
-          *err = HTM_ETREE;
-        }
-      return -1;
-    }
-  return 0;
+  if (err != nullptr)
+  {
+    *err = HTM_ETREE;
+  }
+  return -1;
 }
 }

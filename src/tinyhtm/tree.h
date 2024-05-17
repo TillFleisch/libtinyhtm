@@ -11,8 +11,6 @@
 #include <vector>
 #include <string>
 
-#include <H5Cpp.h>
-
 #include "geometry.h"
 
 #ifdef __cplusplus
@@ -37,12 +35,11 @@ struct htm_tree
   size_t entry_size;            /**< Size of each entry. */
   size_t num_elements_per_entry;
   std::vector<std::string> element_names;
-  std::vector<H5::DataType> element_types;
   void *entries;     /**< Data file memory map. */
   const void *index; /**< Tree file memory map. */
   size_t indexsz;    /**< Size of tree file memory-map (bytes). */
   off_t offset;      /**< Size of tree file memory-map (bytes). */
-  hsize_t datasz;    /**< Size of data file memory-map (bytes). */
+  size_t datasz;    /**< Size of data file memory-map (bytes). */
   int datafd;        /**< File descriptor for data file. */
 } HTM_ALIGNED (16);
 

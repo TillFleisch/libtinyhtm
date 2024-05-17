@@ -170,22 +170,10 @@ int64_t htm_tree_s2circle (const struct htm_tree *tree,
                            const struct htm_v3 *center, double radius,
                            enum htm_errcode *err, htm_callback callback)
 {
-  if (tree->element_types.at (0) == H5::PredType::NATIVE_DOUBLE)
-    {
-      htm_tree_s2circle_template<double>(tree, center, radius, err, callback);
-    }
-  else if (tree->element_types.at (0) == H5::PredType::NATIVE_FLOAT)
-    {
-      htm_tree_s2circle_template<float>(tree, center, radius, err, callback);
-    }
-  else
-    {
-      if (err != nullptr)
-        {
-          *err = HTM_ETREE;
-        }
-      return -1;
-    }
-  return 0;
+  if (err != nullptr)
+  {
+    *err = HTM_ETREE;
+  }
+  return -1;
 }
 }

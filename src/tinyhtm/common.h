@@ -10,7 +10,6 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "config.h"
 
 /** \def HTM_UNUSED
     Marks a function argument as unused.

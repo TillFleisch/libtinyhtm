@@ -28,7 +28,6 @@ enum htm_errcode htm_tree_init (struct htm_tree *tree,
   const unsigned char *s;
   uint64_t off, count;
   int i;
-  const size_t pagesz = (size_t)sysconf (_SC_PAGESIZE);
   enum htm_errcode err = HTM_OK;
   void *data_mmap;
   size_t mmap_size, index_offset;
@@ -54,54 +53,6 @@ enum htm_errcode htm_tree_init (struct htm_tree *tree,
       return HTM_ENULLPTR;
     }
   if (stat (datafile, &sb) != 0)
-    {
-      return HTM_EIO;
-    }
-
-  /* Open with hdf5 commands just to get the size and offsets.  Then
-     mmap with raw calls */
-  try
-    {
-      H5::H5File hdf_file (datafile, H5F_ACC_RDONLY);
-      H5::DataSet dataset = hdf_file.openDataSet ("data");
-      tree->offset = dataset.getOffset ();
-      tree->datasz = dataset.getStorageSize ();
-      auto htm_type = dataset.getCompType ();
-      tree->entry_size = htm_type.getSize ();
-      tree->num_elements_per_entry = htm_type.getNmembers ();
-
-      try
-        {
-          tree->element_types.reserve (tree->num_elements_per_entry);
-          tree->element_names.reserve (tree->num_elements_per_entry);
-          for (size_t i = 0; i < tree->num_elements_per_entry; ++i)
-            {
-              tree->element_types.push_back (htm_type.getMemberDataType (i));
-              tree->element_names.push_back (htm_type.getMemberName (i));
-            }
-        }
-      catch (std::exception &e)
-        {
-          return HTM_ENOMEM;
-        }
-
-      /* memory map the index (if there is one) */
-
-      try
-        {
-          auto index_dataset = hdf_file.openDataSet ("htm_index");
-          index_offset = index_dataset.getOffset ();
-          tree->indexsz = index_dataset.getStorageSize ();
-          if (tree->indexsz % pagesz != 0)
-            tree->indexsz += pagesz - tree->indexsz % pagesz;
-        }
-      catch (H5::Exception &e)
-        {
-          /// Ignore any errors from trying to open a non-existant
-          /// dataset.
-        }
-    }
-  catch (H5::Exception &e)
     {
       return HTM_EIO;
     }
